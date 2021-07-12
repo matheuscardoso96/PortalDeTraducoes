@@ -8,6 +8,7 @@ namespace PortalDeTraducoes.Models.Entities
     public class User : Entity
     {
         public string NickName { get; private set; }
+        public string Email { get; private set; }
         public string Country { get; private set; }
         public string State { get; private set; }
         public string City { get; private set; }

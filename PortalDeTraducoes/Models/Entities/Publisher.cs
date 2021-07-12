@@ -11,6 +11,7 @@ namespace PortalDeTraducoes.Models.Entities
         public string ImageUrl { get; set; }
         public ICollection<Game> Games { get; private set; } = new List<Game>();
 
+        
         public Publisher(string name, string imageUrl, int iD) : base(iD)
         {
             Name = name;

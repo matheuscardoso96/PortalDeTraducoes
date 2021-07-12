@@ -1,0 +1,17 @@
+﻿@model IEnumerable<PortalDeTraducoes.Models.Entities.Publisher>
+
+@{
+}
+
+<h1>Página de publishers</h1>
+<ul class="list-group list-group-flush">
+    @foreach (var item in Model)
+    {
+        <li class="list-group-item"><a asp-controller="Publishers" asp-action="Page" asp-route-publisherName="@item.Name">@item.Name</a></li>
+    }
+</ul>
+
+
+<!-- <div id="PublisherLogo">
+    <img src="https://cdn.akamai.steamstatic.com/steamcommunity/public/images/avatars/5f/5f4b7a6439548f5513fc72968dae2217309e3d54_full.jpg"/>
+</div>-->

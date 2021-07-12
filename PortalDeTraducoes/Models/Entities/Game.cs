@@ -11,17 +11,18 @@ namespace PortalDeTraducoes.Models.Entities
         public DateTime ReleaseDate { get; private set; }
         public IList<Genre> Genre { get; private set; }
         public IList<Developer> Developers { get; private set; }
-        public IList<Publisher> Publisher { get; private set; }
+        public IList<Publisher> Publishers { get; private set; }
         public IList<Platform> Platforms { get; private set; }
         public IList<Translation> Translations { get; private set; } = new List<Translation>();
 
+       
         public Game(string title, DateTime releaseDate, int iD) :base(iD)
         {
             ReleaseDate = releaseDate;
             Title = title;
             Genre = new List<Genre>();
             Developers = new List<Developer>();
-            Publisher = new List<Publisher>();
+            Publishers = new List<Publisher>();
             Platforms = new List<Platform>();
             
         }
@@ -38,7 +39,7 @@ namespace PortalDeTraducoes.Models.Entities
 
         public void AddPublisher(Publisher publisher)
         {
-            Publisher.Add(publisher);
+            Publishers.Add(publisher);
         }
 
         public void AddPlatform(Platform platform)

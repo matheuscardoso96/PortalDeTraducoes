@@ -1,0 +1,19 @@
+﻿@model PortalDeTraducoes.Models.Entities.Publisher
+
+
+<div id="PublisherLogo">
+    <img src="@Model.ImageUrl" />
+</div>
+<div id="PublisherName">
+    <h2>@Model.Name</h2>
+</div>
+<h3>Games:</h3>
+<div>
+    <ul>
+
+        @foreach (var game in Model.Games)
+        {
+            <li>game.Name</li>
+        }
+    </ul>
+</div>

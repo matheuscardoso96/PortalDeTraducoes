@@ -1,0 +1,9 @@
+﻿@model IEnumerable<PortalDeTraducoes.Models.ViewModels.GameViewModel>
+
+<h1>Página de Jogos</h1>
+<ul class="list-group list-group-flush">
+    @foreach (var item in Model)
+    {
+        <li class="list-group-item"><a asp-controller="Games" asp-action="Game" asp-route-title="@item.Title">@item.Title</a></li>
+    }
+</ul>

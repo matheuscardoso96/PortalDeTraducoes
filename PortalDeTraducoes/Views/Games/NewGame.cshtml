@@ -1,0 +1,32 @@
+﻿<form asp-controller="Games" asp-action="RegisterGame" method="post">
+    <input type="hidden" id="ID" name="ID" value="0" />
+    <input type="hidden" id="PlatformID" name="PlatformID" value="0" />
+
+    <div class="form-group">
+        <label for="Title">Título</label>
+        <input type="text" class="form-control" id="Title" name="Title" placeholder="Game Title" />
+    </div>
+    <div class="form-group">
+        <label for="ReleaseDate">Data de Lançamento</label>
+        <input type="date" class="form-control" id="ReleaseDate" name="ReleaseDate" />
+    </div>
+    <div class="form-group">
+        <label for="Genres">Gêneros</label>
+        <input type="text" class="form-control" id="Genres" name="Genres" placeholder="Gêneros separados por vírgula" />
+    </div>
+    <div>
+        <label for="Developers">Desenvolvedores</label>
+        <input type="text" class="form-control" id="Developers" name="Developers" placeholder="Desenvolvedores sepados por vírgula" />
+    </div>
+    <div class="form-group">
+        <label for="Publishers">Distribuidoras</label>
+        <input type="text" class="form-control" id="Publishers" name="Publishers" placeholder="Distribuidoras sepados por vírgula" />
+    </div>
+    <div class="form-group">
+        @Html.DropDownList("platformsId", (MultiSelectList)ViewBag.Platforms, new { multiple = "multiple"})
+    </div>
+
+    <input type="submit" class="btn btn-primary" value="Salvar" />
+
+
+</form>
