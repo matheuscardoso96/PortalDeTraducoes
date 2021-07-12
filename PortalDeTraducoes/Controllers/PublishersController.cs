@@ -37,7 +37,7 @@ namespace PortalDeTraducoes.Controllers
 
         public async Task<IActionResult> Page(string publisherName)
         {          
-            return View(await _portalContexto.Publishers.Where(p => p.Name.Contains(publisherName)).FirstOrDefaultAsync());
+            return View(await _portalContexto.Publishers.Where(p => p.Name.Contains(publisherName)).Include(p => p.Games).FirstOrDefaultAsync());
         }
 
       

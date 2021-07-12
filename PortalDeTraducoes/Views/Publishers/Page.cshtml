@@ -13,7 +13,7 @@
 
         @foreach (var game in Model.Games)
         {
-            <li>game.Name</li>
+            <li><a asp-controller="Games" asp-action="Game" asp-route-title="@game.Title">@game.Title</a> </li>
         }
     </ul>
 </div>

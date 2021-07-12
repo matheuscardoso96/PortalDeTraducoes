@@ -11,6 +11,8 @@ namespace PortalDeTraducoes.Context.Mappings
             builder.ToTable("Game");
             builder.Property(d => d.Title).HasColumnType("varchar(255)")
                 .IsRequired();
+            builder.Property(d => d.CoverArtUrl).HasColumnType("varchar(500)")
+                .IsRequired();
             builder.Property(d => d.ReleaseDate).HasColumnType("DateTime")
                 .IsRequired();
             builder.HasIndex(d => d.Title)

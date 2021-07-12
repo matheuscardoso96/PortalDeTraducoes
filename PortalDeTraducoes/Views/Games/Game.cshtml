@@ -1,0 +1,72 @@
+﻿@model PortalDeTraducoes.Models.ViewModels.GameViewModel
+
+<div class="jumbotron">
+    <div class="row">
+        <div class="col-sm">
+            <div class="text-center">
+                <img src="@Model.CoverArtUrl"/>
+            </div>
+        </div>      
+
+    </div>
+    <div class="row text-center">
+        <div class="col-sm">
+            <div>
+                @Html.Label("Title", Model.Title)
+                <hr />
+            </div>
+            <div>
+                <h4>Informações:</h4>
+            </div>
+            <div>
+                @Html.Label("ReleaseDate", $"Ano de lançamento: {Model.RealeaseDate.ToString("dd/MM/yyyy")}")
+            </div>
+            <div>
+                <label>Gêneros: </label>
+                @foreach (var item in Model.Genres)
+                {
+                    <label>@item.Name </label>
+                }
+            </div>
+            <div>
+                <label>Desenvolvedoras: </label>
+                @foreach (var item in Model.Developers)
+                {
+                    <label>@item.Name </label>
+
+                }
+            </div>
+            <div>
+                <label>Distribuidoras: </label>
+                @foreach (var item in Model.Publishers)
+                {
+                    <a asp-controller="Publishers" asp-action="Page" asp-route-publisherName="@item.Name">@item.Name </a>
+                }
+            </div>
+            <div>
+                <label>Plataformas: </label>
+                @foreach (var item in Model.Platforms)
+                {
+                    <label>@item.Name </label>
+                }
+            </div>
+
+        </div>
+    </div>
+    <hr />
+    @if (Model.Translations.Count > 0)
+    {
+        <div class="row justify-content-center">
+            <div class="ml-3">
+                <h4>Traduções:</h4>
+            </div>
+            <ul class="list-group">
+                @foreach (var item in Model.Translations)
+                {
+                    <li class="list-group-item">@item.TranslationVersions.Last().Version </li>
+                }
+            </ul>
+        </div>
+    }
+    <hr />
+</div>

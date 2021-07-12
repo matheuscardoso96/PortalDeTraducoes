@@ -9,22 +9,20 @@ namespace PortalDeTraducoes.Models.Entities
     {
         public string Title { get; private set; }
         public DateTime ReleaseDate { get; private set; }
-        public IList<Genre> Genre { get; private set; }
-        public IList<Developer> Developers { get; private set; }
-        public IList<Publisher> Publishers { get; private set; }
-        public IList<Platform> Platforms { get; private set; }
-        public IList<Translation> Translations { get; private set; } = new List<Translation>();
+        public string CoverArtUrl { get; private set; }
+        public IList<Genre> Genre { get; private set; } = new List<Genre>();
+        public IList<Developer> Developers { get;  set; } = new List<Developer>();
+        public IList<Publisher> Publishers { get;  set; } = new List<Publisher>();
+        public IList<Platform> Platforms { get;  set; } = new List<Platform>();
+        public IList<Translation> Translations { get;  set; } = new List<Translation>();
 
        
-        public Game(string title, DateTime releaseDate, int iD) :base(iD)
+        public Game(string title, DateTime releaseDate, string coverArtUrl , int iD) :base(iD)
         {
             ReleaseDate = releaseDate;
             Title = title;
-            Genre = new List<Genre>();
-            Developers = new List<Developer>();
-            Publishers = new List<Publisher>();
-            Platforms = new List<Platform>();
-            
+            CoverArtUrl = coverArtUrl;
+           
         }
 
         public void AddGenre(Genre genre) 
