@@ -1,0 +1,19 @@
+﻿
+
+@using (Html.BeginForm("Register", "Home",FormMethod.Post))
+{
+<div class="form-group">
+    <label for="Nickname">Apelido</label>
+    <input type="text" class="form-control" id="NickName" name="NickName" placeholder="Apelido" />
+</div>
+<div class="form-group">
+    <label for="Email"> E-mail</label>
+    <input type="text" class="form-control" id="Email" name="Email" placeholder="E-mail" />
+</div>
+   
+<div class="form-group">
+    <label for="Password"> Password</label>
+    <input type="password" class="form-control" id="Password" name="Password" placeholder="Senha" />
+</div>
+  <input type="submit" class="btn btn-secondary" value="Cadastrar"/>
+}

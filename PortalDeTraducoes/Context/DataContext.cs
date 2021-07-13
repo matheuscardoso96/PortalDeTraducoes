@@ -18,7 +18,8 @@ namespace PortalDeTraducoes.Context
         public DbSet<Publisher> Publishers { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<Translation> Translations { get; set; }
-        public DbSet<TranslationVersion> TranslationVersions { get; set; }
+        public DbSet<TranslationVersion> TranslationVersions { get; set; }        
+        public DbSet<UserRole> UserRoles { get; set; }
 
         public DataContext(DbContextOptions options): base(options) { }
 
@@ -33,7 +34,8 @@ namespace PortalDeTraducoes.Context
             modelBuilder.ApplyConfiguration(new TranslationMap());
             modelBuilder.ApplyConfiguration(new TranslationVersionMap());
             modelBuilder.ApplyConfiguration(new UserMap());
-      
+            modelBuilder.ApplyConfiguration(new UserRoleMap());
+
         }
 
     }

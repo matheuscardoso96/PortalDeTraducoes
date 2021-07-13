@@ -13,6 +13,8 @@ namespace PortalDeTraducoes.Models.Entities
         public string State { get; private set; }
         public string City { get; private set; }
         public string Password { get; private set; }
+        public UserRole UserRole { get; set; }
+        public int UserRoleID { get; set; }
         public bool Active { get; private set; }
         public Group Group { get; set; }
         public int? GroupID { get; set; }       
@@ -27,6 +29,7 @@ namespace PortalDeTraducoes.Models.Entities
             Password = password;
             Active = true;
             GroupID = groupID;
+            UserRoleID = 3;
             
             
         }

@@ -9,6 +9,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Authorization;
 
 namespace PortalDeTraducoes.Controllers
 {
@@ -31,13 +32,15 @@ namespace PortalDeTraducoes.Controllers
                 Publishers = game.Publishers }).ToListAsync());
         }
 
+       
         public async Task<IActionResult> Game(string title)
         {
             var game = await _portalContext.Games.Where(g => g.Title == title).Include(g => g.Platforms).Include(g => g.Developers).Include(g => g.Publishers).Include(g => g.Genre).Include(g => g.Translations).FirstOrDefaultAsync();
             var gameViewModel = new GameViewModel { ID = game.ID, Title = game.Title, CoverArtUrl = game.CoverArtUrl, Genres = game.Genre, RealeaseDate = game.ReleaseDate, Translations = game.Translations, Developers = game.Developers, Platforms = game.Platforms, Publishers = game.Publishers  };
             return View(gameViewModel);
         }
-
+        
+        [Authorize]
         public async Task<IActionResult> NewGame()
         {
             ViewBag.Platforms = new MultiSelectList(await _portalContext.Platforms.ToListAsync(), "ID", "Name");
