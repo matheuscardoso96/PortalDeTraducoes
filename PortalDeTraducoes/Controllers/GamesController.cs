@@ -3,8 +3,6 @@ using PortalDeTraducoes.Context;
 using PortalDeTraducoes.Models.ViewModels;
 using PortalDeTraducoes.Models.InputModels;
 using PortalDeTraducoes.Models.Entities;
-using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
@@ -20,6 +18,8 @@ namespace PortalDeTraducoes.Controllers
         {
             _portalContext = portalContext;
         }
+
+        [AllowAnonymous]
         public async Task<IActionResult> Index()
         {
             return View(await _portalContext.Games.Select(game => new GameViewModel { 
@@ -29,10 +29,12 @@ namespace PortalDeTraducoes.Controllers
                 Translations = game.Translations,
                 Developers = game.Developers, 
                 Platforms = game.Platforms, 
-                Publishers = game.Publishers }).ToListAsync());
+                Publishers = game.Publishers 
+            }).ToListAsync());
         }
 
-       
+
+        [AllowAnonymous]
         public async Task<IActionResult> Game(string title)
         {
             var game = await _portalContext.Games.Where(g => g.Title == title).Include(g => g.Platforms).Include(g => g.Developers).Include(g => g.Publishers).Include(g => g.Genre).Include(g => g.Translations).FirstOrDefaultAsync();
@@ -40,7 +42,7 @@ namespace PortalDeTraducoes.Controllers
             return View(gameViewModel);
         }
         
-        [Authorize]
+   
         public async Task<IActionResult> NewGame()
         {
             ViewBag.Platforms = new MultiSelectList(await _portalContext.Platforms.ToListAsync(), "ID", "Name");
@@ -48,6 +50,7 @@ namespace PortalDeTraducoes.Controllers
             return  View();
         }
 
+  
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> RegisterGame([Bind("ID", "Title","CovertArtUrl" ,"ReleaseDate", "Genres", "Developers", "Publishers", "PlatformsId", "GenresId")] GameInputModel game)

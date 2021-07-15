@@ -1,9 +1,32 @@
-﻿@model IEnumerable<PortalDeTraducoes.Models.ViewModels.GameViewModel>
+﻿@inject SignInManager<IdentityUser> signInManger
+@model IEnumerable<PortalDeTraducoes.Models.ViewModels.GameViewModel>
 
-<h1>Página de Jogos</h1>
-<ul class="list-group list-group-flush">
-    @foreach (var item in Model)
+
+    
+
+<div class="d-flex justify-content-between">
+    <div>
+        <h3>Jogos</h3>
+    </div>
+    @if (signInManger.IsSignedIn(User))
     {
-        <li class="list-group-item"><a asp-controller="Games" asp-action="Game" asp-route-title="@item.Title">@item.Title</a></li>
+        <div>
+            <a asp-action="NewGame" asp-controller="Games" class="btn btn-primary">Novo jogo</a>
+        </div>
     }
-</ul>
+</div>
+
+<div class="row">
+    <div class="col">
+      
+        <ul class="list-group">
+            @foreach (var item in Model)
+            {
+                <li class="list-group-item"><a asp-controller="Games" asp-action="Game" asp-route-title="@item.Title">@item.Title</a></li>
+            }
+        </ul>
+    </div>
+    
+</div>
+
+

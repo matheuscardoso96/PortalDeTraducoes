@@ -1,0 +1,42 @@
+﻿<style>
+    .form-signin {
+        width: 100%;
+        max-width: 600px;
+        padding: 15px;
+        margin: 0 auto;
+    }
+</style>
+
+@model PortalDeTraducoes.Models.InputModels.UserLoginInputModel
+
+@{
+    ViewBag.Title = "Entrar";
+    var returnUrl = Context.Request.Query["ReturnUrl"];
+    
+}
+
+
+<form class="form-signin" asp-controller="Account" asp-action="Login" asp-route-returnurl="@returnUrl" method="post">
+    <h3>Entrar</h3>
+    <div asp-validation-summary="All" class="text-danger"></div>
+    <div class="form-group">
+        <label for="Nickname">Apelido</label>
+        <input type="text" class="form-control" id="NickName" name="NickName" placeholder="Apelido" />
+        <span asp-validation-for="NickName" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label for="Password">Senha</label>
+        <input type="password" class="form-control" id="Password" name="Password" placeholder="Senha" />
+        <span asp-validation-for="Password" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <div>
+            <label asp-for="StayLogged">
+                <input asp-for="StayLogged" />
+                @Html.DisplayNameFor(m => m.StayLogged)
+            </label>
+        </div>
+    </div>
+    <input type="submit" class="btn btn-primary" value="Entrar" />
+</form>
+

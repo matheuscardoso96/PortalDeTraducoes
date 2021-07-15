@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using PortalDeTraducoes.Context.Mappings;
 using PortalDeTraducoes.Models.Entities;
 using System;
@@ -8,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace PortalDeTraducoes.Context
 {
-    public class DataContext : DbContext
+    public class DataContext : IdentityDbContext
     {
         public DbSet<Developer> Developers { get; set; }
         public DbSet<Game> Games { get; set; }
@@ -16,15 +17,16 @@ namespace PortalDeTraducoes.Context
         public DbSet<Group> Groups { get; set; }
         public DbSet<Platform> Platforms { get; set; }
         public DbSet<Publisher> Publishers { get; set; }
-        public DbSet<User> Users { get; set; }
+       // public DbSet<User> Users { get; set; }
         public DbSet<Translation> Translations { get; set; }
         public DbSet<TranslationVersion> TranslationVersions { get; set; }        
-        public DbSet<UserRole> UserRoles { get; set; }
+       // public DbSet<UserRole> UserRoles { get; set; }
 
         public DataContext(DbContextOptions options): base(options) { }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder) 
         {
+            base.OnModelCreating(modelBuilder);
             modelBuilder.ApplyConfiguration(new DeveloperMap());
             modelBuilder.ApplyConfiguration(new GameMap());
             modelBuilder.ApplyConfiguration(new GenreMap());
@@ -33,8 +35,8 @@ namespace PortalDeTraducoes.Context
             modelBuilder.ApplyConfiguration(new PublisherMap());
             modelBuilder.ApplyConfiguration(new TranslationMap());
             modelBuilder.ApplyConfiguration(new TranslationVersionMap());
-            modelBuilder.ApplyConfiguration(new UserMap());
-            modelBuilder.ApplyConfiguration(new UserRoleMap());
+            //modelBuilder.ApplyConfiguration(new UserMap());
+            //modelBuilder.ApplyConfiguration(new UserRoleMap());
 
         }
 

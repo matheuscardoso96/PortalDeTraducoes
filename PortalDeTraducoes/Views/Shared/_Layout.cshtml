@@ -1,4 +1,5 @@
-﻿<!DOCTYPE html>
+﻿@inject SignInManager<IdentityUser> signInManger
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -8,6 +9,10 @@
     <link rel="stylesheet" href="~/css/site.css" />
     <style>
     </style>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
 </head>
 <body>
     <header>
@@ -26,6 +31,32 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Games" asp-action="Index">Jogos</a>
                         </li>
+
+                    </ul>
+                    <ul class="navbar-nav ml-auto">
+                        @if (signInManger.IsSignedIn(User))
+                        {
+                            <li class="nav-item">
+                                <form method="post" asp-action="Logout" asp-controller="Account">
+
+                                    <button type="submit" class="nav-link btn btn-link py-0" style="width:auto">
+                                        @User.Identity.Name | Sair
+                                    </button>
+                                </form>
+
+                            </li>
+
+                        }
+                        else
+                        {
+                            <li class="nav-item">
+                                <a asp-controller="Account" asp-action="Register" class="nav-link">Cadastar</a>
+                            </li>
+                            <li class="nav-item">
+                                <a asp-controller="Account" asp-action="Login" class="nav-link">Entrar</a>
+                            </li>
+                        }
+
                     </ul>
                 </div>
             </div>
@@ -41,10 +72,6 @@
         <div class="container">
             &copy; 2021 - Portal de Traduções - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
         </div>
-    </footer>
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
-    @await RenderSectionAsync("Scripts", required: false)
+    </footer>   
 </body>
 </html>
