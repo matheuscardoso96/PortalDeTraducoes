@@ -8,22 +8,22 @@ namespace PortalDeTraducoes.Context.Mappings
     {
         public void Configure(EntityTypeBuilder<User> builder)
         {
-            builder.ToTable("User");
-            builder.Property(d => d.NickName).HasColumnType("varchar(90)")
-                .IsRequired();
-            builder.Property(d => d.Country).HasColumnType("varchar(90)");
-            builder.Property(d => d.State).HasColumnType("varchar(90)");
-            builder.Property(d => d.City).HasColumnType("varchar(90)");
-            builder.Property(d => d.Password).HasColumnType("varchar(30)")
-            .IsRequired();
+            //builder.ToTable("User");
+            //builder.Property(d => d.NickName).HasColumnType("varchar(90)")
+            //    .IsRequired();
+            //builder.Property(d => d.Country).HasColumnType("varchar(90)");
+            //builder.Property(d => d.State).HasColumnType("varchar(90)");
+            //builder.Property(d => d.City).HasColumnType("varchar(90)");
+            //builder.Property(d => d.Password).HasColumnType("varchar(30)")
+            //.IsRequired();
 
-            builder.HasOne(g => g.Group).WithMany(u => u.Users).OnDelete(DeleteBehavior.NoAction);
+            builder.HasDiscriminator().HasValue("User");
+
+            //builder.HasOne(g => g.Group).WithMany(u => u.Users).OnDelete(DeleteBehavior.NoAction);
            
 
-            builder.HasIndex(d => d.NickName)
-                    .HasDatabaseName("IX_User_NickName");
-
-           // builder.HasData(new User("Capcom", "",1));
+            //builder.HasIndex(d => d.NickName)
+            //        .HasDatabaseName("IX_User_NickName");
 
         }
     }

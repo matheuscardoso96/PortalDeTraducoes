@@ -1,36 +1,22 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Identity;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace PortalDeTraducoes.Models.Entities
 {
-    public class User : Entity
+    public class User : IdentityUser
     {
-        public string NickName { get; private set; }
-        public string Email { get; private set; }
-        public string Country { get; private set; }
-        public string State { get; private set; }
-        public string City { get; private set; }
-        public string Password { get; private set; }
-        public UserRole UserRole { get; set; }
-        public int UserRoleID { get; set; }
+        public string Country { get; set; }
         public bool Active { get; private set; }
         public Group Group { get; set; }
         public int? GroupID { get; set; }       
         public IList<Translation> Translations { get; private set; }
-        public User(string nickName, string country, string state, string city, string password, int? groupID, int iD) : base(iD)
+        public User()
         {
-            Translations = new List<Translation>();
-            NickName = nickName;
-            Country = country;
-            State = state;
-            City = city;
-            Password = password;
-            Active = true;
-            GroupID = groupID;
-            UserRoleID = 3;
-            
+            Translations = new List<Translation>();         
+            Active = true;           
             
         }
         public void AddTranslation(Translation translation) 

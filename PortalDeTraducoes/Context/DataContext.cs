@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace PortalDeTraducoes.Context
 {
-    public class DataContext : IdentityDbContext
+    public class DataContext : IdentityDbContext<User>
     {
         public DbSet<Developer> Developers { get; set; }
         public DbSet<Game> Games { get; set; }
@@ -17,11 +17,9 @@ namespace PortalDeTraducoes.Context
         public DbSet<Group> Groups { get; set; }
         public DbSet<Platform> Platforms { get; set; }
         public DbSet<Publisher> Publishers { get; set; }
-       // public DbSet<User> Users { get; set; }
         public DbSet<Translation> Translations { get; set; }
-        public DbSet<TranslationVersion> TranslationVersions { get; set; }        
-       // public DbSet<UserRole> UserRoles { get; set; }
-
+        public DbSet<TranslationVersion> TranslationVersions { get; set; }   
+        
         public DataContext(DbContextOptions options): base(options) { }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder) 
@@ -35,8 +33,6 @@ namespace PortalDeTraducoes.Context
             modelBuilder.ApplyConfiguration(new PublisherMap());
             modelBuilder.ApplyConfiguration(new TranslationMap());
             modelBuilder.ApplyConfiguration(new TranslationVersionMap());
-            //modelBuilder.ApplyConfiguration(new UserMap());
-            //modelBuilder.ApplyConfiguration(new UserRoleMap());
 
         }
 

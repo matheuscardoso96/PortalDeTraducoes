@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using PortalDeTraducoes.Models.Entities;
 using PortalDeTraducoes.Models.InputModels;
 using System;
 using System.Collections.Generic;
@@ -11,10 +12,10 @@ namespace PortalDeTraducoes.Controllers
 {
     public class AccountController : Controller
     {
-        private readonly UserManager<IdentityUser> _userManager;
-        private readonly SignInManager<IdentityUser> _signInManager;
+        private readonly UserManager<User> _userManager;
+        private readonly SignInManager<User> _signInManager;
 
-        public AccountController(UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager)
+        public AccountController(UserManager<User> userManager, SignInManager<User> signInManager)
         {
             _userManager = userManager;
             _signInManager = signInManager;
@@ -55,12 +56,12 @@ namespace PortalDeTraducoes.Controllers
 
         [HttpPost]
         [AllowAnonymous]
-        public async Task<IActionResult> Register([Bind("NickName", "Email", "Password", "ConfirmPassword")] UserInputModel userInputModel)
+        public async Task<IActionResult> Register(UserInputModel userInputModel)
         {
             if (!ModelState.IsValid)
-                return RedirectToAction("Login");
+                return View(userInputModel);
             
-            var user = new IdentityUser { UserName = userInputModel.NickName, Email = userInputModel.Email };
+            var user = new User { UserName = userInputModel.NickName, Email = userInputModel.Email, Country = userInputModel.Country };
             var result = await _userManager.CreateAsync(user, userInputModel.Password);
 
             if (result.Succeeded)
@@ -76,15 +77,26 @@ namespace PortalDeTraducoes.Controllers
             return View(userInputModel);
         }
 
-        [AcceptVerbs("GET","POST")]
+
         [AllowAnonymous]
-        public async Task<IActionResult> IsEmailInUse(string email) 
+        [AcceptVerbs("Get","Post")]
+        public async Task<JsonResult> CheckEmail(string email) 
         {
         
-            if (await _userManager.FindByEmailAsync(email) != null)
-                return Json($"E-mail {email} já está em uso.");
+           if (await _userManager.FindByEmailAsync(email) != null)
+              return Json($"E-mail {email} já está em uso.");           
             
-            
+            return Json(true);
+        }
+
+        [AllowAnonymous]
+        [AcceptVerbs("Get", "Post")]
+        public async Task<JsonResult> CheckNick(string nickName)
+        {
+
+            if (await _userManager.FindByNameAsync(nickName) != null)
+                return Json($"O apelido {nickName} já está em uso.");
+
             return Json(true);
         }
 

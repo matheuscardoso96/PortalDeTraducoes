@@ -1,0 +1,39 @@
+﻿@model IEnumerable<Microsoft.AspNetCore.Identity.IdentityRole>
+
+@{
+    ViewBag.Title = "Todos os papéis";
+}
+
+@if (Model.Any())
+{
+    <a asp-controller="Administration" asp-action="NewRole" class="btn btn-primary" style="width:auto">Criar um papel</a>
+
+    foreach (var role in Model)
+    {
+        <div class="card mb-3">
+            <div class="card-header">
+                Role Id = @role.Id
+            </div>
+            <div class="card-body">
+                <h5 class="card-title">@role.Name</h5>
+            </div>
+            <div class="card-footer">
+                <a asp-controller="Administration" asp-action="ApagarRole" class="btn btn-danger" style="width:auto">Apagar</a>
+                <a asp-controller="Administration" asp-action="EditRole" class="btn btn-primary" style="width:auto">Editar</a>
+            </div>
+        </div>
+    }
+}
+else
+{
+    <div class="card">
+        <div class="card-header">
+            Nenhum papel criado
+        </div>
+        <div class="card-body">
+            <h5 class="card-title">Use o botão abaixo para criar um novo papel</h5>
+            <a asp-controller="Administration" asp-action="NewRole" class="btn btn-primary" style="width:auto">Criar um papel</a>
+        </div>
+    </div>
+}
+

@@ -1,36 +1,40 @@
-﻿@model PortalDeTraducoes.Models.InputModels.UserInputModel
+﻿@model UserInputModel
 
 @{
     ViewBag.Title = "Registrar";
 }
 
+@section scripts{
+    <partial name="_ValidationScriptsPartial" />
+}
 
 
 <form asp-controller="Account" asp-action="Register" method="post">
     <div asp-validation-summary="All" class="text-danger"></div>
     <div class="form-group">
         <label for="Nickname">Apelido</label>
-        <input type="text" class="form-control" id="NickName" name="NickName" placeholder="Apelido" />
+        <input class="form-control" asp-for="NickName" placeholder="Apelido" />
         <span asp-validation-for="NickName" class="text-danger"></span>
     </div>
     <div class="form-group">
         <label for="Email"> E-mail</label>
-        <input type="email" class="form-control" id="Email" name="Email" placeholder="E-mail" />
+        <input class="form-control" asp-for="Email" placeholder="E-mail" />
         <span asp-validation-for="Email" class="text-danger"></span>
     </div>
     <div class="form-group">
+        <label for="Country"> País</label>
+        <input class="form-control" asp-for="Country" placeholder="País" />
+    </div>
+    <div class="form-group">
         <label for="Password">Senha</label>
-        <input type="password" class="form-control" id="Password" name="Password" placeholder="Senha" />
+        <input type="password" class="form-control" asp-for="Password" placeholder="Senha" />
         <span asp-validation-for="Password" class="text-danger"></span>
     </div>
     <div class="form-group">
         <label for="ConfirmPassword">Confirmar senha</label>
-        <input type="password" class="form-control" id="ConfirmPassword" name="ConfirmPassword" placeholder="Confirmar Senha" />
+        <input type="password" class="form-control" asp-for="ConfirmPassword" placeholder="Confirmar Senha" />
         <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
     </div>
     <input type="submit" class="btn btn-secondary" value="Cadastrar" />
 </form>
-@section Scripts {
-    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
 
-}

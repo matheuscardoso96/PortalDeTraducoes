@@ -11,10 +11,11 @@ namespace PortalDeTraducoes.Models.InputModels
     public class UserInputModel
     {
         [Required(ErrorMessage = "Apelido é necesárrio")]
+        [Remote(action: "CheckNick", controller: "Account", HttpMethod = "Post")]
         public string NickName { get; set; }
         [Required(ErrorMessage = "E-mail é necesárrio")]
         [EmailAddress]
-        [Remote(action:"IsEmailInUse", controller:"Account")]
+        [Remote(action:"CheckEmail", controller:"Account", HttpMethod ="Post")]
         public string Email { get; set; }
         [Required(ErrorMessage = "Senha é necesárria")]
         [DataType(DataType.Password)]      
@@ -24,7 +25,7 @@ namespace PortalDeTraducoes.Models.InputModels
         [DisplayName("Confime senha")]
         [Compare("Password", ErrorMessage = "As senhas não são iguais.")]
         public string ConfirmPassword { get; set; }
-        [Required]
-        public bool StayLogged { get; set; }
+        public string Country { get; internal set; }
+
     }
 }
