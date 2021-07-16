@@ -1,6 +1,10 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using PortalDeTraducoes.Models;
+using PortalDeTraducoes.Models.Entities;
 using PortalDeTraducoes.Models.InputModels;
+using PortalDeTraducoes.Models.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,13 +12,16 @@ using System.Threading.Tasks;
 
 namespace PortalDeTraducoes.Controllers
 {
+    [Authorize(Roles = "Administrador")]
     public class AdministrationController : Controller
     {
         private readonly RoleManager<IdentityRole> _roleManager;
+        private readonly UserManager<User> _userManager;
 
-        public AdministrationController(RoleManager<IdentityRole> roleManager)
+        public AdministrationController(RoleManager<IdentityRole> roleManager, UserManager<User> userManager)
         {
-            _roleManager = roleManager; 
+            _roleManager = roleManager;
+            _userManager = userManager;
         }
         public IActionResult Index()
         {
@@ -51,6 +58,116 @@ namespace PortalDeTraducoes.Controllers
         {
             var roles =  _roleManager.Roles;
             return View(roles);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> EditRole(string id)
+        {
+            var role = await _roleManager.FindByIdAsync(id);
+            if(role == null)
+            {
+                ViewBag.ErrorMessage = $"Id de papel {id} não encontrado";
+                return View("Error", new ErrorViewModel() {  });
+            }
+            var editRoleInputModel = new EditRoleInputModel { Id = role.Id, Role = role.Name };
+            var users = await _userManager.GetUsersInRoleAsync(role.Name);
+            editRoleInputModel.Users = users.Select(u => u.UserName).ToList();
+            return View(editRoleInputModel);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> EditRole(EditRoleInputModel model)
+        {
+            var role = await _roleManager.FindByIdAsync(model.Id);
+            if (role == null) 
+            {
+                ViewBag.ErrorMessage = $"Id de papel {model.Id} não encontrado";
+                return Redirect("/Shared/Error");
+            }
+
+            role.Name = model.Role;
+            var result =  await _roleManager.UpdateAsync(role);
+
+            if (result.Succeeded)
+                return RedirectToAction("AllRoles");
+
+            foreach (var idError in result.Errors)
+                ModelState.AddModelError("",idError.Description);
+            
+          
+            return View(model);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> EditUsersInRole(string roleId)
+        {
+            ViewBag.RoleId = roleId;
+            var role = await _roleManager.FindByIdAsync(roleId);
+            if (role == null)
+            {
+                ViewBag.ErrorMessage = $"Id de papel {roleId} não encontrado";
+                return Redirect("/Shared/Error");
+            }
+
+            var model = new List<UsersRoleInputModel>();
+            var usersInThisRole = await _userManager.GetUsersInRoleAsync(role.Name);
+
+            foreach (var user in _userManager.Users)
+            {
+                var userRoleVm = new UsersRoleInputModel
+                {
+                    UserId = user.Id,
+                    UserName = user.UserName
+                };
+
+                if (usersInThisRole.Any(u => u.Id == user.Id))
+                    userRoleVm.IsSelected = true;               
+                else
+                    userRoleVm.IsSelected = false;
+                
+                model.Add(userRoleVm);
+
+            }
+
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> EditUsersInRole(List<UsersRoleInputModel> model,string roleId)
+        {
+            ViewBag.RoleId = roleId;
+            var role = await _roleManager.FindByIdAsync(roleId);
+            if (role == null)
+            {
+                ViewBag.ErrorMessage = $"Id de papel {roleId} não encontrado";
+                return Redirect("/Shared/Error");
+            }
+
+            //  var model = new List<UsersRoleInputModel>();
+
+
+            foreach (var md in model)
+            {
+                var user = await _userManager.FindByIdAsync(md.UserId);
+                IdentityResult result = null;
+
+                if (md.IsSelected && !await _userManager.IsInRoleAsync(user, role.Name))
+                {
+                    result = await _userManager.AddToRoleAsync(user, role.Name);
+                }
+                else if (!md.IsSelected && await _userManager.IsInRoleAsync(user, role.Name))
+                {
+                    result = await _userManager.RemoveFromRoleAsync(user, role.Name);
+                }
+                else
+                {
+                    continue;
+                }
+            }         
+          
+            
+
+            return RedirectToAction("EditRole", new { Id = roleId });
         }
     }
 }
