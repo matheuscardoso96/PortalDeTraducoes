@@ -169,5 +169,83 @@ namespace PortalDeTraducoes.Controllers
 
             return RedirectToAction("EditRole", new { Id = roleId });
         }
+
+        [HttpGet]
+        public  IActionResult ListUsers()
+        {
+            var users = _userManager.Users.Where(u => u.Active);
+            return View(users);
+        }
+
+        [HttpGet]
+        public async Task <IActionResult> EditUser(string id)
+        {
+            var user = await  _userManager.FindByIdAsync(id);
+            if (user == null)
+            {
+                ViewBag.ErrorMessage = $"Não foi possível encontrar o usuário com o id {id}";
+                return View("Error", new { Id = id });
+            }
+
+            var userInput = new EditUserInputModel() { Id = user.Id, NickName = user.UserName , Country = user.Country, Email = user.Email }; 
+
+            return View(userInput);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> EditUser(EditUserInputModel model)
+        {
+            if (!ModelState.IsValid)
+                return RedirectToAction("EditUser", new { model.Id });
+
+            var user = await _userManager.FindByIdAsync(model.Id);
+            if (user == null)
+            {
+                ViewBag.ErrorMessage = $"Não foi possível encontrar o usuário com o id {model.Id}";
+                return View("Error", new { model.Id }) ;
+            }
+
+            user.UserName = model.NickName;
+            user.Email = model.Email;
+            user.Country = model.Country;
+
+            var result = await _userManager.UpdateAsync(user);
+
+            if (result.Succeeded)
+                return RedirectToAction("ListUsers");
+            
+
+            foreach (var item in result.Errors)
+                ModelState.AddModelError("", item.Description);
+
+
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> DisableUser(string Id)
+        {          
+
+            var user = await _userManager.FindByIdAsync(Id);
+            if (user == null)
+            {
+                ViewBag.ErrorMessage = $"Não foi possível encontrar o usuário com o id {Id}";
+                return View("Error", new { Id });
+            }
+
+            user.Deactivate();
+
+            var result = await _userManager.UpdateAsync(user);
+
+            if (result.Succeeded)
+                return RedirectToAction("ListUsers");
+
+
+            foreach (var item in result.Errors)
+                ModelState.AddModelError("", item.Description);
+
+
+            return View();
+        }
     }
 }

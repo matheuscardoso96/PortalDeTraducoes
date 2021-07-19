@@ -1,0 +1,39 @@
+﻿@model IEnumerable<User>
+
+@{
+    ViewBag.Title = "Todos os usuários";
+}
+
+<h1>Usuários</h1>
+
+@if (Model.Any())
+{
+    foreach (var user in Model)
+    {
+        <div class="card mb-3">
+            <div class="card-header">
+                User id : @user.Id
+            </div>
+            <div class="card-body">
+                <h5 class="card-title">
+                   @user.UserName
+                </h5>              
+            </div>
+            <div class="card-footer">
+                <a class="btn btn-primary" asp-controller="Administration" asp-action="EditUser" asp-route-id="@user.Id">Editar</a>
+                <form asp-action="DisableUser" asp-route-id="@user.Id" method="post">
+                    <input type="submit" class="btn btn-danger" value="Desativar usuário"/>
+                </form>
+               
+            </div>
+        </div>
+    }
+}
+else
+{
+    <div class="card">
+        <div class="card-header">
+            Nenhuma usuário criado ainda
+        </div>
+    </div>
+}

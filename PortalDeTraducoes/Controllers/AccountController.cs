@@ -23,15 +23,22 @@ namespace PortalDeTraducoes.Controllers
        
         [AllowAnonymous]
         public IActionResult Login()
-        {          
+        {
+            if (User.Identity.IsAuthenticated)
+                return RedirectToAction("Index","Home");
+            
             return View();
         }
 
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         [AllowAnonymous]
         public async Task<IActionResult> Login([Bind("NickName", "Password")] UserLoginInputModel userLoginInputModel, string returnUrl)
         {
+            if (User.Identity.IsAuthenticated)
+                return RedirectToAction("Index", "Home");
+
             if (!ModelState.IsValid)
                 return RedirectToAction("Login");
 
@@ -106,6 +113,14 @@ namespace PortalDeTraducoes.Controllers
         {
            await _signInManager.SignOutAsync();
            return RedirectToAction("Index", "Home");
+        }
+
+        [HttpGet]
+        [AllowAnonymous]
+        public IActionResult AccessDenied()
+        {
+            
+            return View();
         }
     }
 }

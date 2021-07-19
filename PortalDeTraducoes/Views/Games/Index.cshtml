@@ -18,14 +18,17 @@
 
 <div class="row">
     <div class="col">
-      
-        <ul class="list-group">
-            @foreach (var item in Model)
-            {
-                <li class="list-group-item"><a asp-controller="Games" asp-action="Game" asp-route-title="@item.Title">@item.Title</a></li>
-            }
-        </ul>
-    </div>
+        @foreach (var item in Model)
+        {
+            <div class="card mb-4" style="width: 50rem;">
+                <div class="card-body">
+                    <a asp-controller="Games" asp-action="Game" asp-route-title="@item.Title">@item.Title</a>
+                    
+                </div>
+            </div>
+        }
+
+        </div>
     
 </div>
 
