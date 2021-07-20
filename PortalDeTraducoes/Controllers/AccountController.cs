@@ -3,10 +3,14 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using PortalDeTraducoes.Models.Entities;
 using PortalDeTraducoes.Models.InputModels;
+using System.Security.Claims;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using PortalDeTraducoes.Models.ViewModels;
+using PortalDeTraducoes.Context;
+using Microsoft.EntityFrameworkCore;
 
 namespace PortalDeTraducoes.Controllers
 {
@@ -14,11 +18,13 @@ namespace PortalDeTraducoes.Controllers
     {
         private readonly UserManager<User> _userManager;
         private readonly SignInManager<User> _signInManager;
+        private readonly DataContext _portalContext;
 
-        public AccountController(UserManager<User> userManager, SignInManager<User> signInManager)
+        public AccountController(UserManager<User> userManager, SignInManager<User> signInManager, DataContext portalContext)
         {
             _userManager = userManager;
             _signInManager = signInManager;
+            _portalContext = portalContext;
         }
        
         [AllowAnonymous]
@@ -113,6 +119,20 @@ namespace PortalDeTraducoes.Controllers
         {
            await _signInManager.SignOutAsync();
            return RedirectToAction("Index", "Home");
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Profile() 
+        {
+            var user = await _userManager.GetUserAsync(User);
+            var userTranslations = _portalContext.Translations.Include(t => t.Users.Where(u => u.Id == user.Id));//Where(t => t.Users.Contains(user)).ToList();
+            List<string> translations = new List<string>();
+            foreach (var translation in userTranslations)
+                translations.Add($"{translation.Game.Title}");
+            
+            var userVm = new UserProfileViewModel() { NickName = user.UserName, Email = user.Email, Country = user.Country, Translations = translations };
+            userVm.Group = user.GroupID != null ? user.Group.Name: "";
+            return View(userVm);
         }
 
         [HttpGet]

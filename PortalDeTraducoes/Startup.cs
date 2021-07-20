@@ -31,7 +31,7 @@ namespace PortalDeTraducoes
         public void ConfigureServices(IServiceCollection services)
         {            
 
-            services.AddDbContext<DataContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));//.LogTo(Console.WriteLine, Microsoft.Extensions.Logging.LogLevel.Information)
+            services.AddDbContext<DataContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")).LogTo(Console.WriteLine, Microsoft.Extensions.Logging.LogLevel.Information));//.LogTo(Console.WriteLine, Microsoft.Extensions.Logging.LogLevel.Information)
             services.AddControllersWithViews();
             services.AddIdentity<User, IdentityRole>().AddErrorDescriber<IdentityPortugueseMessages>().AddEntityFrameworkStores<DataContext>();
             services.AddMvc(options =>

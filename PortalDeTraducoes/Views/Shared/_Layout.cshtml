@@ -53,15 +53,19 @@
                     <ul class="navbar-nav ml-auto">
                         @if (signInManger.IsSignedIn(User))
                         {
+                            <li class="nav-item">                            
+                             <a asp-action="Profile" asp-controller="Account" class="nav-link btn btn-link py-0">@User.Identity.Name</a>
+                          </li>
                             <li class="nav-item">
                                 <form method="post" asp-action="Logout" asp-controller="Account">
 
                                     <button type="submit" class="nav-link btn btn-link py-0" style="width:auto">
-                                        @User.Identity.Name | Sair
+                                       Sair
                                     </button>
                                 </form>
 
                             </li>
+                            
 
                         }
                         else
