@@ -103,6 +103,14 @@ namespace PortalDeTraducoes.Controllers
             return Json(true);
         }
 
+
+        public JsonResult GetUsers(string term)
+        {
+            var users = _portalContext.Users.Where(u => u.UserName.Contains(term)).Select(us => us.UserName);
+
+            return Json(users);
+        }
+
         [AllowAnonymous]
         [AcceptVerbs("Get", "Post")]
         public async Task<JsonResult> CheckNick(string nickName)

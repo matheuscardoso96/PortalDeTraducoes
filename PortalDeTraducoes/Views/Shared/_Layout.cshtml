@@ -10,15 +10,28 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
     <style>
         body {
             font-family: 'Roboto', sans-serif !important;
         }
+
+        .ui-helper-hidden-accessible {
+            display: none !important;
+        }
+
+        .ui-autocomplete {
+            background-color: gray;
+            width: 200px;
+        }
+
+        .carousel-item {
+            height: 300px;
+            overflow: hidden;
+            width: 100%;
+        }
     </style>
-    @await RenderSectionAsync("Scripts", required: false)
+
+
 </head>
 <body>
     <header>
@@ -39,33 +52,33 @@
                         </li>
                         @if (signInManger.IsSignedIn(User) && User.IsInRole("Administrador"))
                         {
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle text-dark" href="#" id="navBarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Gerenciar</a>
-                        
-                        <div class="dropdown-menu" aria-labelledby="navBarDropdownMenuLink">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Administration" asp-action="ListUsers">Usuários</a>
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Administration" asp-action="AllRoles">Papéis</a>
-                        </div>
-                    </li>
-                               
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle text-dark" href="#" id="navBarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Gerenciar</a>
+
+                                <div class="dropdown-menu" aria-labelledby="navBarDropdownMenuLink">
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Administration" asp-action="ListUsers">Usuários</a>
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Administration" asp-action="AllRoles">Papéis</a>
+                                </div>
+                            </li>
+
                         }
                     </ul>
                     <ul class="navbar-nav ml-auto">
                         @if (signInManger.IsSignedIn(User))
                         {
-                            <li class="nav-item">                            
-                             <a asp-action="Profile" asp-controller="Account" class="nav-link btn btn-link py-0">@User.Identity.Name</a>
-                          </li>
+                            <li class="nav-item">
+                                <a asp-action="Profile" asp-controller="Account" class="nav-link btn btn-link py-0">@User.Identity.Name</a>
+                            </li>
                             <li class="nav-item">
                                 <form method="post" asp-action="Logout" asp-controller="Account">
 
                                     <button type="submit" class="nav-link btn btn-link py-0" style="width:auto">
-                                       Sair
+                                        Sair
                                     </button>
                                 </form>
 
                             </li>
-                            
+
 
                         }
                         else
@@ -88,11 +101,15 @@
             @RenderBody()
         </main>
     </div>
-
     <footer class="border-top footer text-muted">
         <div class="container">
             &copy; 2021 - Portal de Traduções - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
         </div>
     </footer>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

@@ -7,18 +7,19 @@ namespace PortalDeTraducoes.Models.Entities
 {
     public class Translation : Entity
     {
-        public string Language { get; private set; }
+        public Language Language { get; set; }
+        public int LanguageID { get; set; }
         public Game Game { get; set; }
         public int GameID { get; set; }
-        public ICollection<User> Users { get; private set; }
+        public ICollection<User> Users { get; private set; } = new List<User>();
         public ICollection<TranslationImage> TranslationImages { get; private set; } = new List<TranslationImage>();
         public Group Group { get; set; }
         public int? GroupID { get; set; }
         public ICollection<TranslationVersion> TranslationVersions { get; set; } = new List<TranslationVersion>();
 
-        public Translation(string language, int gameID, int? groupID, int iD) : base(iD)
-        {            
-            Language = language;
+        public Translation(int gameID, int? groupID, int iD, int languageID) : base(iD)
+        {
+            LanguageID = languageID;
             GameID = gameID;
             GroupID = groupID;
 

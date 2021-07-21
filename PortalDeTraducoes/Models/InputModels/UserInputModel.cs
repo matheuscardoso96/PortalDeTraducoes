@@ -12,6 +12,7 @@ namespace PortalDeTraducoes.Models.InputModels
     {
         [Required(ErrorMessage = "Apelido é necesárrio")]
         [Remote(action: "CheckNick", controller: "Account", HttpMethod = "Post")]
+        [MinLength(4)]
         public string NickName { get; set; }
         [Required(ErrorMessage = "E-mail é necesárrio")]
         [EmailAddress]

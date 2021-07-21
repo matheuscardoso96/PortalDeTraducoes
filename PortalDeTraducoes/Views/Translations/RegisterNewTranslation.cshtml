@@ -1,0 +1,183 @@
+﻿@model TranslationInputModel
+
+@{
+    ViewBag.Title = "Cadastrar nova tradução";
+}
+
+
+
+<div class="card border-dark">
+    <div class="card-header text-center">
+        <h3 class="card-title">Cadastrar nova tradução</h3>
+    </div>
+    <div class="card-body">
+        <form asp-action="RegisterNewTranslation" asp-controller="Translations" method="post">
+            <input type="hidden" asp-for="GameId"/>
+            <div class="row">
+                <div class="col-6">
+                    <div class="form-group">
+                        <label for="Language">Língua</label>
+                        <select class="form-control" asp-for="LanguageID" asp-items="@ViewBag.Languages"></select>
+                        <span asp-validation-for="LanguageID" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="form-group">
+                        <label for="GameName">Nome do jogo:</label>
+                        <input class="form-control" asp-for="GameName" placeholder="Nome do jogo" readonly/>
+                        <span asp-validation-for="GameName" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-8">
+                    <div class="form-group">
+                        <label for="userToAdd">Adicionar:</label>
+                        <input class="form-control" id="userToAdd" name="userToAdd" placeholder="Nome do participante" />
+                    </div>
+                    <div class="form-group">
+                        <input type="button" class="btn btn-primary" value="Adicionar participante" onclick="addUserToList()">
+                    </div>
+
+                </div>
+                <div class="col-4">
+                    <div class="form-group" id="userList">
+                        <label for="DownloadLink">Partipantes:</label>
+                        @for (int i = 0; i < Model.Users.Count; i++)
+                        {
+                            <input asp-for="@Model.Users[i]" readonly class="form-control" />
+                        }
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-3">
+                    <div class="form-group">
+                        <label for="Version">Número da versão:</label>
+                        <input class="form-control" asp-for="Version" placeholder="Número da versão da tradução" />
+                        <span asp-validation-for="Version" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="form-group">
+                        <label for="PatchNote">Nota de versão:</label>
+                        <textarea class="form-control" asp-for="PatchNote" placeholder="Breve descrição do que está contido nessa versão"></textarea>
+                        <span asp-validation-for="PatchNote" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-6">
+                    <div class="form-group">
+                        <label for="ImageToAdd">Adicionar:</label>
+                        <input class="form-control" id="ImageToAdd" name="ImageToAdd" placeholder="Url da imagem" />
+                    </div>
+                    <div class="form-group">
+                        <input type="button" class="btn btn-primary" value="Adicionar imagem" onclick="addImage()">
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div id="addedImages">
+                        @for (int i = 0; i < Model.TranslationImages.Count; i++)
+                        {
+                            <input  type="hidden" asp-for="@Model.TranslationImages[i]"/>
+                        }
+                    </div>
+
+                    <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
+                        <div class="carousel-inner" id="carouselImgs">
+                            
+                                @{
+                                    var nAtivar = "carousel-item";
+                                    var qual = "carousel-item active";
+                                }
+                                @for (int i = 0; i < Model.TranslationImages.Count; i++)
+                                {
+                                    @if (i > 0)
+                                    {
+                                        qual = nAtivar;
+                                    }
+                                    <div class="@qual">
+
+                                        <img class="d-block" src="@Model.TranslationImages[i]" alt="Primeiro Slide">
+                                    </div>
+                                }
+
+                           
+                        </div>
+                        <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            <span class="sr-only">Anterior</span>
+                        </a>
+                        <a class="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                            <span class="sr-only">Próximo</span>
+                        </a>
+                    </div>
+
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <div class="form-group">
+                        <label for="DownloadLink">Link para donwload do patch:</label>
+                        <input class="form-control" asp-for="DownloadLink" placeholder="Link direto para download" />
+                        <span asp-validation-for="DownloadLink" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+            <input type="submit" class="btn btn-primary" value="Cadastrar" />
+        </form>
+
+    </div>
+</div>
+
+@section scripts
+{
+    <script>
+
+        $(function () {
+            $("#userToAdd").autocomplete({
+                source: "/Account/GetUsers",
+                minLength: 1,
+
+            });
+        });
+
+        function addUserToList()
+        {
+            var inputFormDiv = document.getElementById('userList');
+            var elements = inputFormDiv.getElementsByTagName('input').length;
+            var userName = document.getElementById('userToAdd');
+            inputFormDiv.innerHTML += '<input readonly="" class="form-control" type="text" id="Users_' + elements + '_" name="Users[' + elements + ']" value="' + userName.value + '">';
+            userName.value = "";
+        }
+        function addImage() {
+            var inputFormDiv = document.getElementById('addedImages');
+            var elements = inputFormDiv.getElementsByTagName('input').length;
+            var imgeUrl = document.getElementById('ImageToAdd').value;
+            inputFormDiv.innerHTML += '<input type="hidden" id="TranslationImages_' + elements + '" name="TranslationImages[' + elements + ']" value="' + imgeUrl + '">';
+
+
+            var carInner = document.getElementById('carouselImgs');
+            var gg;
+            if (elements >= 1) {
+                gg = '<div class="carousel-item"><img class="d-block" src="' + imgeUrl + '" alt="Primeiro Slide"></div>';
+            } else
+            {
+                gg = '<div class="carousel-item active"><img class="d-block" src="' + imgeUrl + '" alt="Primeiro Slide"></div>';
+            }
+            carInner.innerHTML += gg;
+            document.getElementById('ImageToAdd').value = "";
+
+           
+       
+        }
+
+
+    </script>
+
+
+
+
+}

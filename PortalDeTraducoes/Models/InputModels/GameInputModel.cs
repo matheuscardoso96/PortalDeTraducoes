@@ -9,7 +9,6 @@ namespace PortalDeTraducoes.Models.InputModels
 {
     public class GameInputModel
     {
-        public int ID { get; set; }
         public string Title { get; set; }
         public string CovertArtUrl { get; set; }
         [DataType(DataType.Date)]

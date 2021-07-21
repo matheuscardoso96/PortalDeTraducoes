@@ -54,6 +54,11 @@
         </div>
     </div>
     <hr />
+    <div class="row">
+        <div class="col-3">
+            <a asp-action="RegisterNewTranslation" asp-controller="Translations" asp-route-gameName="@Model.Title" class="btn btn-primary">Adicionar tradução</a>
+        </div>
+    </div>
     @if (Model.Translations.Count > 0)
     {
         <div class="row justify-content-center">
