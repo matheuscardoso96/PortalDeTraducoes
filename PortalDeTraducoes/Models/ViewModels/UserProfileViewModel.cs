@@ -12,6 +12,6 @@ namespace PortalDeTraducoes.Models.ViewModels
         public string Email { get; set; }
         public string Country { get; set; }
         public string Group { get; set; }
-        public List<string> Translations { get; set; }
+        public Dictionary<int,string> Translations { get; set; }
     }
 }

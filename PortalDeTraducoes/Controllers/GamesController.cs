@@ -22,23 +22,34 @@ namespace PortalDeTraducoes.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> Index()
         {
-            return View(await _portalContext.Games.Select(game => new GameViewModel { 
+            return View(await _portalContext.Games.Include(p => p.Platforms).Select(game => new GameViewModel { 
                 ID = game.ID, 
                 Title = game.Title,
-                RealeaseDate = game.ReleaseDate,
-                Translations = game.Translations,
-                Developers = game.Developers, 
-                Platforms = game.Platforms, 
-                Publishers = game.Publishers 
+                Platforms = game.Platforms.Select(p => p.Name).ToList()
             }).ToListAsync());
         }
 
 
         [AllowAnonymous]
-        public async Task<IActionResult> Game(string title)
+        public async Task<IActionResult> Game(int id)
         {
-            var game = await _portalContext.Games.Where(g => g.Title == title).Include(g => g.Platforms).Include(g => g.Developers).Include(g => g.Publishers).Include(g => g.Genre).Include(g => g.Translations).FirstOrDefaultAsync();
-            var gameViewModel = new GameViewModel { ID = game.ID, Title = game.Title, CoverArtUrl = game.CoverArtUrl, Genres = game.Genre, RealeaseDate = game.ReleaseDate, Translations = game.Translations, Developers = game.Developers, Platforms = game.Platforms, Publishers = game.Publishers  };
+            var game = await _portalContext.Games.Where(g => g.ID == id)
+                .Include(g => g.Platforms).Include(g => g.Developers)
+                .Include(g => g.Publishers).Include(g => g.Genre)
+                .Include(g => g.Translations).FirstOrDefaultAsync();
+
+
+            var gameViewModel = new GameViewModel { 
+                ID = game.ID, 
+                Title = game.Title, 
+                CoverArtUrl = game.CoverArtUrl, 
+                Genres = game.Genre.Select(ge => ge.Name).ToList(), 
+                RealeaseDate = game.ReleaseDate, 
+                Translations = game.Translations.Select(t => t.ID.ToString()).ToList(), 
+                Developers = game.Developers.Select(dev => dev.Name).ToList(), 
+                Platforms = game.Platforms.Select(pl => pl.Name).ToList(), 
+                Publishers = game.Publishers.Select(pub => pub.Name).ToList()
+            };
             return View(gameViewModel);
         }
         

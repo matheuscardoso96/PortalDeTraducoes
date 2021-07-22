@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using PortalDeTraducoes.Context;
 using PortalDeTraducoes.Models.Entities;
 using PortalDeTraducoes.Models.InputModels;
+using PortalDeTraducoes.Models.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,6 +26,35 @@ namespace PortalDeTraducoes.Controllers
         public IActionResult Index()
         {
             return View();
+        }
+
+        [AllowAnonymous]
+        public async Task<IActionResult> Information(int id)
+        {
+            var translation = await _portalContext.Translations
+                .Where(t => t.ID == id)
+                .Include(t => t.Users)
+                .Include(t => t.TranslationImages)
+                .Include(x => x.Language)
+                .Include(x => x.Game).
+                Include(x => x.TranslationVersions)
+                .Include(x => x.Group)
+                .FirstOrDefaultAsync();
+            
+            var tvm = new TranslationViewModel() { Language = translation.Language.Name, 
+                GameName = translation.Game.Title, 
+                GameId = translation.GameID,
+                Versions = translation.TranslationVersions.Select(tv => tv.Version).ToList(),
+                DownloadLinks = translation.TranslationVersions.Select(tv => tv.DownloadLink).ToList(),
+                Notes = translation.TranslationVersions.Select(tv => tv.PatchNote).ToList() ,
+                TranslationImages = translation.TranslationImages.Select(tv => tv.Url).ToList(),
+                Users = translation.Users.Select(t => t.UserName).ToList()
+            };
+
+            tvm.GroupID = translation.Group != null ? translation.Group.ID : null;
+            tvm.GroupName = translation.Group != null ? translation.Group.Name : null;
+
+            return View(tvm);
         }
 
         public async Task<IActionResult> RegisterNewTranslation(string gameName) 
@@ -74,7 +104,7 @@ namespace PortalDeTraducoes.Controllers
                 _portalContext.Translations.Add(translation);
                 await _portalContext.SaveChangesAsync();
 
-                return RedirectToAction("Game", "Games", new object []{ translationInput.GameName });
+                return RedirectToAction("Game", "Games", new object []{ translationInput.GameId });
 
             }
             ViewBag.Languages = _portalContext.Languages.Select(l => new SelectListItem()

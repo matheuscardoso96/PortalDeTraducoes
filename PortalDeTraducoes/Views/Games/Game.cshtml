@@ -1,77 +1,43 @@
 ﻿@model PortalDeTraducoes.Models.ViewModels.GameViewModel
 
-<div class="jumbotron">
+@{
+
+    // Model.RealeaseDate.ToString("dd/MM/yyyy")
+}
+<div class="card bg-light">
     <div class="row">
-        <div class="col-sm">
-            <div class="text-center">
-                <img src="@Model.CoverArtUrl"/>
+        <div class="col-12 col-md-4">
+            <div class="text-center text-md-right">
+                <img src="@Model.CoverArtUrl" />
             </div>
-        </div>      
+        </div>
+        <div class="col-12 col-md-8">
+            <div class="row">
+                <div class="col-12">
+                    <h2 class="card-title pt-4 text-center text-md-left">@Model.Title</h2>
 
-    </div>
-    <div class="row text-center">
-        <div class="col-sm">
-            <div>
-                @Html.Label("Title", Model.Title)
-                <hr />
+                </div>
+                <div class="col-12 mb-4">
+                    <div class="text-center text-md-left">
+                        @{
+                            <div>Desenvolvores: @string.Join(" ", Model.Developers)</div>
+                            <div>Distribuidoras: @string.Join(" ", Model.Publishers)</div>
+                            <div>Gêneros: @string.Join(" ", Model.Genres)</div>
+                            <div>Plataformas: @string.Join(" ", Model.Platforms)</div>
+                        }
+                    </div>
+                </div>
             </div>
-            <div>
-                <h4>Informações:</h4>
-            </div>
-            <div>
-                @Html.Label("ReleaseDate", $"Ano de lançamento: {Model.RealeaseDate.ToString("dd/MM/yyyy")}")
-            </div>
-            <div>
-                <label>Gêneros: </label>
-                @foreach (var item in Model.Genres)
-                {
-                    <label>@item.Name </label>
-                }
-            </div>
-            <div>
-                <label>Desenvolvedoras: </label>
-                @foreach (var item in Model.Developers)
-                {
-                    <label>@item.Name </label>
 
-                }
-            </div>
-            <div>
-                <label>Distribuidoras: </label>
-                @foreach (var item in Model.Publishers)
-                {
-                    <a asp-controller="Publishers" asp-action="Page" asp-route-publisherName="@item.Name">@item.Name </a>
-                }
-            </div>
-            <div>
-                <label>Plataformas: </label>
-                @foreach (var item in Model.Platforms)
-                {
-                    <label>@item.Name </label>
-                }
-            </div>
 
         </div>
+
     </div>
-    <hr />
+
     <div class="row">
-        <div class="col-3">
-            <a asp-action="RegisterNewTranslation" asp-controller="Translations" asp-route-gameName="@Model.Title" class="btn btn-primary">Adicionar tradução</a>
-        </div>
+
+
     </div>
-    @if (Model.Translations.Count > 0)
-    {
-        <div class="row justify-content-center">
-            <div class="ml-3">
-                <h4>Traduções:</h4>
-            </div>
-            <ul class="list-group">
-                @foreach (var item in Model.Translations)
-                {
-                    <li class="list-group-item">@item.TranslationVersions.Last().Version </li>
-                }
-            </ul>
-        </div>
-    }
-    <hr />
 </div>
+
+<a asp-action="RegisterNewTranslation" asp-controller="Translations" asp-route-gameName="@Model.Title" class="btn btn-primary">Adicionar tradução</a>

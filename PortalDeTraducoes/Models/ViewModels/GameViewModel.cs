@@ -12,10 +12,10 @@ namespace PortalDeTraducoes.Models.ViewModels
         public string Title { get; set; }
         public string CoverArtUrl { get; set; }
         public DateTime RealeaseDate { get; set; }
-        public IList<Developer> Developers { get; set; } = new List<Developer>();
-        public IList<Publisher> Publishers { get; set; } = new List<Publisher>();
-        public IList<Platform> Platforms { get; set; } = new List<Platform>();
-        public IList<Translation> Translations { get; set; } = new List<Translation>();
-        public IList<Genre> Genres { get; set; } = new List<Genre>();
+        public IList<string> Developers { get; set; } = new List<string>();
+        public IList<string> Publishers { get; set; } = new List<string>();
+        public IList<string> Platforms { get; set; } = new List<string>();
+        public IList<string> Translations { get; set; } = new List<string>();
+        public IList<string> Genres { get; set; } = new List<string>();
     }
 }

@@ -133,12 +133,9 @@ namespace PortalDeTraducoes.Controllers
         public async Task<IActionResult> Profile() 
         {
             var user = await _userManager.GetUserAsync(User);
-            var userTranslations = _portalContext.Translations.Include(t => t.Users.Where(u => u.Id == user.Id));//Where(t => t.Users.Contains(user)).ToList();
-            List<string> translations = new List<string>();
-            foreach (var translation in userTranslations)
-                translations.Add($"{translation.Game.Title}");
+            var userTranslations = _portalContext.Translations.Include(t => t.Users.Where(u => u.Id == user.Id)).Include(t => t.Game).ToDictionary(t => t.ID ,t => t.Game.Title);//Where(t => t.Users.Contains(user)).ToList();
             
-            var userVm = new UserProfileViewModel() { NickName = user.UserName, Email = user.Email, Country = user.Country, Translations = translations };
+            var userVm = new UserProfileViewModel() { NickName = user.UserName, Email = user.Email, Country = user.Country, Translations = userTranslations };
             userVm.Group = user.GroupID != null ? user.Group.Name: "";
             return View(userVm);
         }

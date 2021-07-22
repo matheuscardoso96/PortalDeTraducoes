@@ -9,5 +9,32 @@
         <h3 class="card-title">@Model.NickName</h3>
     </div>
     <div class="card-body">
+        <div class="row">        
+            <div class="col-12">
+                <table class="table table-bordered">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th scope="col">
+                                <h3>Traduções</h3>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        @foreach (var item in Model.Translations)
+                        {
+                            <tr><td><a asp-controller="Translations" asp-action="Information" asp-route-id="@item.Key">@item.Value</a></td></tr>
+
+
+                        }
+
+
+                    </tbody>
+                </table>
+
+
+            </div>
+
+        </div>
     </div>
 </div>

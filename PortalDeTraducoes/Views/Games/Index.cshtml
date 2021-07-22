@@ -4,29 +4,37 @@
 
     
 
-<div class="d-flex justify-content-between">
-    <div>
-        <h3>Jogos</h3>
-    </div>
-    @if (signInManger.IsSignedIn(User))
-    {
-        <div>
-            <a asp-action="NewGame" asp-controller="Games" class="btn btn-primary">Novo jogo</a>
-        </div>
-    }
-</div>
-
 <div class="row">
-    <div class="col">
-        @foreach (var item in Model)
+    <div class="col-12 mb-2">
+        @if (signInManger.IsSignedIn(User))
         {
-            <div class="card mb-4" style="width: 50rem;">
-                <div class="card-body">
-                    <a asp-controller="Games" asp-action="Game" asp-route-title="@item.Title">@item.Title</a>
-                    
-                </div>
+            <div>
+                <a asp-action="NewGame" asp-controller="Games" class="btn btn-primary">Novo jogo</a>
             </div>
         }
+    </div>
+    <div class="col-12">
+        <table class="table table-bordered">
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col">
+                        <h3>Jogos</h3>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+              
+                @foreach (var item in Model)
+                {
+                    <tr><td><a asp-controller="Games" asp-action="Game" asp-route-id="@item.ID">@($"{item.Title}({string.Join(" ", item.Platforms)})")</a></td></tr>
+
+
+                }
+
+
+            </tbody>
+        </table>
+        
 
         </div>
     

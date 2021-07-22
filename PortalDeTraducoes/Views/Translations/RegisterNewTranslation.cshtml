@@ -14,14 +14,14 @@
         <form asp-action="RegisterNewTranslation" asp-controller="Translations" method="post">
             <input type="hidden" asp-for="GameId"/>
             <div class="row">
-                <div class="col-6">
+                <div class="col-12 col-md-6">
                     <div class="form-group">
                         <label for="Language">Língua</label>
                         <select class="form-control" asp-for="LanguageID" asp-items="@ViewBag.Languages"></select>
                         <span asp-validation-for="LanguageID" class="text-danger"></span>
                     </div>
                 </div>
-                <div class="col-6">
+                <div class="col-12 col-md-6">
                     <div class="form-group">
                         <label for="GameName">Nome do jogo:</label>
                         <input class="form-control" asp-for="GameName" placeholder="Nome do jogo" readonly/>
@@ -30,7 +30,7 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-8">
+                <div class="col-12 col-md-8">
                     <div class="form-group">
                         <label for="userToAdd">Adicionar:</label>
                         <input class="form-control" id="userToAdd" name="userToAdd" placeholder="Nome do participante" />
@@ -40,7 +40,7 @@
                     </div>
 
                 </div>
-                <div class="col-4">
+                <div class="col-12 col-md-4">
                     <div class="form-group" id="userList">
                         <label for="DownloadLink">Partipantes:</label>
                         @for (int i = 0; i < Model.Users.Count; i++)
@@ -51,14 +51,14 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-3">
+                <div class="col-12 col-md-3">
                     <div class="form-group">
                         <label for="Version">Número da versão:</label>
                         <input class="form-control" asp-for="Version" placeholder="Número da versão da tradução" />
                         <span asp-validation-for="Version" class="text-danger"></span>
                     </div>
                 </div>
-                <div class="col">
+                <div class="col-12 col-md-9">
                     <div class="form-group">
                         <label for="PatchNote">Nota de versão:</label>
                         <textarea class="form-control" asp-for="PatchNote" placeholder="Breve descrição do que está contido nessa versão"></textarea>
@@ -67,7 +67,7 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-6">
+                <div class="col-12 col-md-6">
                     <div class="form-group">
                         <label for="ImageToAdd">Adicionar:</label>
                         <input class="form-control" id="ImageToAdd" name="ImageToAdd" placeholder="Url da imagem" />
@@ -76,7 +76,7 @@
                         <input type="button" class="btn btn-primary" value="Adicionar imagem" onclick="addImage()">
                     </div>
                 </div>
-                <div class="col-6">
+                <div class="col-12 col-md-6">
                     <div id="addedImages">
                         @for (int i = 0; i < Model.TranslationImages.Count; i++)
                         {
